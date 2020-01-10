@@ -2,19 +2,18 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text,Input,Button } from '@tarojs/components'
 import {AtButton, AtInput, AtList, AtListItem} from 'taro-ui';
 
+import {observer, inject} from '@tarojs/mobx';
+
 import './index.scss'
 
-export default class Index extends Component {
-
-  config = {
-    navigationBarTitleText: '首页'
-  }
-
+@inject('todoStore')
+@observer
+class Index extends Component {
   constructor(props){
     super(props);
     this.state = {
       title:'首页',
-      todos:['kk','dd','ddd']
+      // todos:['kk','dd','ddd']
     }
   }
 
@@ -28,6 +27,10 @@ export default class Index extends Component {
 
 // 页面卸载时触发
   componentWillUnmount () { }
+
+  config = {
+    navigationBarTitleText: '首页'
+  }
 
 // 页面显示/切入前台时触发
   componentDidShow () { }
@@ -48,8 +51,9 @@ export default class Index extends Component {
   }
 
   handleClick = () => {
+    this.props.todoStore.addTodo(this.state.val);
     this.setState({
-      todos:[...this.state.todos, this.state.val],
+      // todos:[...this.state.todos, this.state.val],
       val:''
     })
   }
@@ -65,6 +69,8 @@ export default class Index extends Component {
   }
 
   render () {
+    let {todoStore} = this.props;
+
     return (
       <View className='index'>
         <Text>Hello world! you you you haha</Text>
@@ -75,7 +81,7 @@ export default class Index extends Component {
        
         <AtList>
            {
-            this.state.todos.map(v => {
+            todoStore.todos.map(v => {
             return <AtListItem title={v} key={v}></AtListItem>
             })
           }
@@ -86,3 +92,5 @@ export default class Index extends Component {
     )
   }
 }
+
+export default Index
