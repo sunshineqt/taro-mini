@@ -8,7 +8,9 @@ const config = {
     '828': 1.81 / 2
   },
   sourceRoot: 'src',
-  outputRoot: 'dist',
+  // outputRoot: 'dist',
+  // 各个平台使用独立的目录互不影响，从而达到多端同步调试的目的 config/index.js
+  outputRoot: `dist/${process.env.TARO_ENV}`,
   babel: {
     sourceMap: true,
     presets: [
